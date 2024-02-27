@@ -1,0 +1,15 @@
+CHIP PC {
+    IN in[16], inc, load, reset;
+    OUT out[16];
+    
+    PARTS:
+    // 16-bit adder to compute out(t) + 1
+    Add16(in=out, out=add_out);
+    // 16-bit D flip-flop for storing the current value of PC
+    DFF(in=add_out, out=dff_out, out=out);
+    
+    // Muxes for selecting the next PC value based on control bits
+    Mux16(a=dff_out, b=in, sel=load, out=load_out);
+    Mux16(a=load_out, b=false, sel=reset, out=reset_out);
+    Mux16(a=reset_out, b=out, sel=inc, out=out);
+}

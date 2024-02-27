@@ -1,0 +1,18 @@
+CHIP RAM64 {
+    IN in[16], load, address[6];
+    OUT out[16];
+
+    PARTS:
+    // Define 64 16-bit registers
+    RAM8(in=in, load=load, address=address[0..2], out=out_0_7);
+    RAM8(in=in, load=load, address=address[0..2], out=out_8_15);
+    RAM8(in=in, load=load, address=address[0..2], out=out_16_23);
+    RAM8(in=in, load=load, address=address[0..2], out=out_24_31);
+    RAM8(in=in, load=load, address=address[0..2], out=out_32_39);
+    RAM8(in=in, load=load, address=address[0..2], out=out_40_47);
+    RAM8(in=in, load=load, address=address[0..2], out=out_48_55);
+    RAM8(in=in, load=load, address=address[0..2], out=out_56_63);
+
+    // Mux to select the output based on the address
+    Mux8Way16(a=out_0_7, b=out_8_15, c=out_16_23, d=out_24_31, e=out_32_39, f=out_40_47, g=out_48_55, h=out_56_63, sel=address[3..5], out=out);
+}
